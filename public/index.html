@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider Page</title>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Include Slick Carousel CSS and JS -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <!-- Include Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Your custom styles -->
+    <link rel="stylesheet" type="text/css"
+        href="https://fonts.googleapis.com/css2?family=bwmodelica&family=libre+franklin:wght@300&display=swap">
+
+    <style>
+        body {
+            font-family: 'bwmodelica', sans-serif;
+        }
+
+        h2.bold-text {
+            font-family: 'bwmodelica', sans-serif;
+            /* Apply the font to specific elements if needed */
+            font-weight: 300;
+            /* Use the light weight of the font */
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            color: #fff;
+            background: linear-gradient(to right, #222122);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header img {
+            max-height: 40px;
+            /* Adjust the max-height as needed */
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 24px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .divider2 {
+            border-right: 1px dotted #fff;
+            height: 20px;
+            margin: 0 10px;
+        }
+
+        .spacer {
+            flex-grow: 1;
+            /* This makes the spacer take up all available space */
+        }
+
+        section {
+            padding: 0;
+            /* Remove padding for full-width slider */
+            margin: 0;
+            /* Remove margin for full-width slider */
+            overflow: hidden;
+            /* Hide overflow to prevent horizontal scrollbar */
+        }
+
+        .slider {
+            position: relative;
+        }
+
+        .slider-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-section {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+        }
+
+        .content-section h2,
+        .content-section p,
+        .content-section button {
+            margin: 5px;
+        }
+
+        .content-section button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #da0e74;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .slider {
+            width: 100%;
+            /* Full width */
+        }
+
+        .slider img {
+            width: 100%;
+            height: auto;
+        }
+
+        .card {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 14px 17px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .divider {
+            border-top: 1px dashed #ddd;
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        .bold-text {
+            font-weight: bold;
+        }
+
+        .vertical-section {
+            width: 100%;
+            /* Adjust as needed */
+        }
+
+        .icons-section {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            /* Three items in each column */
+            gap: 10px;
+            /* Adjust the gap as needed */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .icon i {
+            margin-bottom: 5px;
+            /* Adjust the margin as needed */
+        }
+
+        .icon-name {
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+        .read-more-content {
+            overflow: hidden;
+            max-height: 200px;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .read-more-toggle {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+
+        #section3 {
+            background: url('./img/t24-upgrade.jpg') center/cover no-repeat fixed;
+            /* Replace 'your-background-image.jpg' with the actual path to your image */
+
+            text-align: left;
+            color: #fff;
+            /* Set the text color */
+        }
+
+        .testimonials {
+            padding: 20px;
+        }
+
+        .testimonials-heading {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-card {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: aliceblue;
+            margin-right: 4px;
+            text-wrap: left;
+            color: #222122;
+        }
+
+        /* Custom arrow styles */
+        .custom-prev,
+        .custom-next {
+            font-size: 24px;
+            color: #fff;
+            background-color: #333;
+            border: none;
+            padding: 10px;
+            border-radius: 10%;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .custom-prev {
+            left: 10px;
+        }
+
+        .custom-next {
+            right: 10px;
+        }
+
+        .features-section {
+            padding: 20px;
+        }
+
+        .features-heading {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .features-subheading {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .features-content {
+            margin-bottom: 20px;
+        }
+
+        .icon-card {
+            width: 100%;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .section4 {
+            position: relative;
+            overflow: hidden;
+            background: url('./img/breakaway-journey.png') center/cover no-repeat fixed;
+            height: 100vh;
+        }
+
+        .section4-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            padding: 20px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .timeline {
+            width: 80%;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .timeline-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #007bff;
+            margin-right: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .timeline-dot i {
+            color: #fff;
+        }
+
+
+        .timeline-content {
+            width: 80%;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .section7 {
+            padding: 20px;
+            margin: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .card-form {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: #e3385f;
+            color: #fff;
+            /* White text color */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        label {
+            margin-top: 10px;
+        }
+
+        input,
+        textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #fff;
+            color: white;
+            /* Pink text color for the button */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: #ff0040;
+        }
+
+        button:hover {
+            background-color: #ff0040;
+            /* Pink background color on hover */
+            color: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <header style="background-color: #374a50;">
+        <img src="./img/logo.png" alt="Logo">&emsp;
+        <h1>|</h1>&emsp;
+        <img src="./img/syncordis.png" alt="Image 1">
+        <div class="spacer"></div>
+        <!-- <div class="divider2"></div> -->
+    </header>
+
+
+    <section id="section1" class="slider">
+        <div class="slider-item">
+            <img src="./img/banner-img01.jpg" alt="Image 1">
+            <div class="content-section">
+                <h2>Consulting Services</h2>
+                <p>Unlock the full potential of your business with our comprehensive consulting services.</p>
+                <button>Book a Consultant</button>
+            </div>
+        </div>
+        <div class="slider-item">
+            <img src="./img/banner-img02.jpg" alt="Image 2">
+            <div class="content-section">
+                <h2>Consulting Services</h2>
+                <p>Unlock the full potential of your business with our comprehensive consulting services.</p>
+                <button>Book a Consultant</button>
+            </div>
+        </div>
+        <div class="slider-item">
+            <img src="./img/banner-img03.jpg" alt="Image 3">
+            <div class="content-section">
+                <h2>Consulting Services</h2>
+                <p>Unlock the full potential of your business with our comprehensive consulting services.</p>
+                <button>Book a Consultant</button>
+            </div>
+        </div>
+        <!-- Add more images as needed -->
+    </section>
+
+
+    <section id="section2">
+        <div class="card">
+            <div class="vertical-section">
+                <h2 class="bold-text">Your big break to <br>to breakaway</h2>
+                <p>This is some content.</p>
+            </div>
+            <div class="vertical-section">
+                <div class="read-more-content">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin hendrerit, nisi eu consequat
+                        suscipit, ex odio volutpat quam, id aliquam lacus quam nec orci. Sed vel lectus vel est cursus
+                        convallis. Sed nec ex ut orci sollicitudin finibus. Quisque ac suscipit justo. Suspendisse eget
+                        justo in tellus feugiat dictum vel id lectus. Sed aliquam, quam eget pharetra hendrerit, odio
+                        ligula tristique mauris, sit amet tincidunt libero ligula non nisi. Nullam id dui sit amet
+                        tellus volutpat vestibulum ut non nunc. In hac habitasse platea dictumst. Vivamus ac sapien at
+                        eros accumsan vulputate.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin hendrerit, nisi eu consequat
+                        suscipit, ex odio volutpat quam, id aliquam lacus quam nec orci. Sed vel lectus vel est cursus
+                        convallis. Sed nec ex ut orci sollicitudin finibus. Quisque ac suscipit justo. Suspendisse eget
+                        justo in tellus feugiat dictum vel id lectus. Sed aliquam, quam eget pharetra hendrerit, odio
+                        ligula tristique mauris, sit amet tincidunt libero ligula non nisi. Nullam id dui sit amet
+                        tellus volutpat vestibulum ut non nunc. In hac habitasse platea dictumst. Vivamus ac sapien at
+                        eros accumsan vulputate.
+                    </p>
+                </div>
+                <span style="text-decoration:none; color: rgb(226, 6, 72) ;" class="read-more-toggle"
+                    onclick="toggleReadMore(this)"><br><strong>Read More</strong> </span>
+
+            </div>
+            <div class="divider"></div>
+            <div class="vertical-section">
+                <h2>Glimpse of Offering :</h2>
+                <div class="icons-section" style="padding: auto;">
+                    <i class="fas fa-star icon"></i>
+                    <p class="icon-name">Stars</p>
+                    <i class="fas fa-heart icon"></i>
+                    <p class="icon-name">Heart</p>
+                    <i class="fas fa-thumbs-up icon"></i>
+                    <p class="icon-name">Thumbs Up</p>
+                    <i class="fas fa-check-circle icon"></i>
+                    <p class="icon-name">Check Circle</p>
+                    <i class="fas fa-comment icon"></i>
+                    <p class="icon-name">Comment</p>
+                    <i class="fas fa-share icon"></i>
+                    <p class="icon-name">Share</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="section3">
+        <h3 style="margin: 20px;">Up Your ante with a Temenos</h2>
+            <h2 style="margin: 20px;font-weight: 700;">T24 Upgrade
+        </h3>
+        <p style="margin: 20px;">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin hendrerit, nisi eu consequat suscipit, ex
+            odio volutpat quam, id aliquam lacus quam nec orci. Sed vel lectus vel est cursus convallis. Sed nec ex ut
+            orci sollicitudin finibus.
+        </p>
+        <div class="testimonials">
+            <h2 class="testimonials-heading">Our Accelerators</h2>
+            <div class="testimonial-slider">
+                <div class="testimonial-card">
+                    <img src="./img/icon-auto-discovery.png" alt="Testimonial 1">
+                    <p>Auto Discovery</p>
+                    <p>Automates manual upgrade assessment on L3 analysis</p>
+                </div>
+                <div class="testimonial-card">
+                    <img src="./img/icon-auto-conversion.png" alt="Testimonial 2">
+                    <p>Auto Conversion</p>
+                    <p>Automates code Conversion across L3, Reducing manual effert by 30-40%</p>
+                </div>
+                <div class="testimonial-card">
+                    <img src="./img/icon-auto-authorize.png" alt="Testimonial 2">
+                    <p>Auto Authorize</p>
+                    <p>Automates authorization of records released during upgrade</p>
+
+                </div>
+                <!-- Add more testimonials as needed -->
+            </div>
+        </div>
+    </section>
+
+    <section id="section4" class="section4">
+        <div class="section4-content">
+            <h2 class="features-heading">A dedicated Upgrade factory to</h2>
+            <h2 class="features-subheading"><strong>Craft your breakaway Journey</strong></h2>
+            <p class="features-content">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin hendrerit, nisi eu consequat suscipit, ex
+                odio volutpat quam, id aliquam lacus quam nec orci. Sed vel lectus vel est cursus convallis. Sed nec ex
+                ut orci sollicitudin finibus.
+            </p>
+            <div class="icon-card">
+                <div class="icon">
+                    <i class="fas fa-rocket"></i>
+                    <p class="icon-name">Rocket</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-lightbulb"></i>
+                    <p class="icon-name">Lightbulb</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-chart-bar"></i>
+                    <p class="icon-name">Chart Bar</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-heart"></i>
+                    <p class="icon-name">Heart</p>
+                </div>
+                <!-- Add more icons as needed -->
+            </div>
+ 
+        </div>
+    </section>
+
+    <section id="section5">
+        <h2 style="text-align: center;">A smother rollout with our</h2>
+        <h2 style="text-align: center; font-weight: 700px;">Upgrade Offering Wheel</h2>
+        <h3 style="text-align: center; font-weight: 400px">What makes LTI Choice, A smother roller with our Upgrade
+            Offering Wheel</h3>
+
+        <div class="card">
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"><img src="./img/icon-business-change-management.png"
+                            alt="Testimonial 2" /></div>
+                    <div class="timeline-line"></div>
+                    <div class="timeline-content" style="margin: 20px;">
+                        <h3>Project 1</h3>
+                        <p>
+                            A smother roller with our Upgrade Offering Wheel
+                            <br>Timeline: Start Date - End Date
+                        </p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"><img src="./img/icon-environment-software-management.png"
+                            alt="Testimonial 2" /></div>
+                    <div class="timeline-line"></div>
+                    <div class="timeline-content" style="margin: 20px;">
+                        <h3>Project 2</h3>
+                        <p>Description of Project 2</p>
+                        <p>Timeline: Start Date - End Date</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"><img src="./img/icon-testing-post-upgrade-support.png"
+                            alt="Testimonial 2" /></div>
+                    <div class="timeline-line"></div>
+                    <div class="timeline-content" style="margin: 20px;">
+                        <h3>Project 3</h3>
+                        <p>Description of Project 3</p>
+                        <p>Timeline: Start Date - End Date</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"><img src="./img/icon-upgrade-strategy-management.png"
+                            alt="Testimonial 2" /></div>
+                    <div class="timeline-line"></div>
+                    <div class="timeline-content" style="margin: 20px;">
+                        <h3>Project 3</h3>
+                        <p>Description of Project 3</p>
+                        <p>Timeline: Start Date - End Date</p>
+                    </div>
+                </div>
+                <!-- Add more timeline items as needed -->
+            </div>
+        </div>
+    </section>
+
+
+    <section id="section6"
+        style="background: url('./img/section-breakthrough-bg.png') center/cover no-repeat fixed; height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; color: #080101;">
+        <div>
+            <h2>Upgrade to the T with</h2>
+            <h2 style="font-weight: 800;">a breakthrough T24 Partner</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin hendrerit, nisi eu consequat suscipit, ex
+                odio volutpat quam, id aliquam lacus quam nec orci. Sed vel lectus vel est cursus convallis. Sed nec ex
+                ut orci sollicitudin finibus. Quisque ac suscipit justo. Suspendisse eget justo in tellus feugiat dictum
+                vel id lectus. Sed aliquam, quam eget pharetra hendrerit, odio ligula tristique mauris, sit amet
+                tincidunt libero ligula non nisi. Nullam id dui sit amet tellus volutpat vestibulum ut non nunc. In hac
+                habitasse platea dictumst. Vivamus ac sapien at eros accumsan vulputate.
+            </p>
+        </div>
+    </section>
+
+    <section id="section7" style="margin-top: -42px;">
+        <div class="card-form">
+            <h2 style="text-align: center;">Reach Out to solve</h2>
+            <h3 style="text-align: center;">Are you ready for seamless T24 Upgrade?</h3>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="organization">Organization:</label>
+                <input type="text" id="organization" name="organization" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" required>
+
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" required>
+
+                <button type="submit" name="bookAssessment">Book an Assessment</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <img src="./img/lnt-logo.png" alt="Company Logo" style="max-height: 40px; padding-top: 10px;">
+            </div>
+            <div>
+                <span>Blogs</span>
+                <span style="margin: 0 10px;">/</span>
+                <span>Careers</span>
+                <!-- Add more links as needed -->
+            </div>
+        </div>
+        <div style=" align-items: center;">
+            <!-- Links for Blogs, Careers, and More (Replace the '#' with actual links) -->
+
+            <div>
+                <!-- Social Media Icons (Replace the '#' with actual links) -->
+                <a href="#"><i class="fab fa-facebook-f" style="color: #ccc ;"></i></a>
+                <a href="#"><i class="fab fa-twitter" style="color: #ccc ;"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in" style="color: #ccc ;"></i></a>
+                <a href="#"><i class="fab fa-instagram" style="color: #ccc ;"></i></a>
+            </div>
+        </div>
+        <p>&copy; 2023 Your Company Name. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        $(document).ready(function () {
+            $('.testimonial-slider').slick({
+                autoplay: true,
+                autoplaySpeed: 2000,
+                dots: true,
+                arrows: true,
+                prevArrow: '<button type="button" class="custom-prev"><i class="fas fa-chevron-left"></i></button>',
+                nextArrow: '<button type="button" class="custom-next"><i class="fas fa-chevron-right"></i></button>'
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.slider').slick({
+                autoplay: true,
+                autoplaySpeed: 2000,
+                dots: true,
+                arrows: false
+            });
+        });
+    </script>
+    <!-- Initialize the Slick Carousel for Testimonials -->
+    <script>
+        $(document).ready(function () {
+            $('.testimonial-slider').slick({
+                dots: true,
+                arrows: true,
+                infinite: true,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                responsive: [
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    },
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+        });
+
+        function toggleReadMore(element) {
+            var content = element.previousElementSibling;
+            content.classList.toggle('read-more-content');
+            element.textContent = (element.textContent === 'Read More') ? 'Read Less' : 'Read More';
+        }
+    </script>
+
+</body>
+
+</html>
